@@ -2,10 +2,9 @@
   "name": "lorem",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "node --experimental-modules x.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --experimental-modules --experimental-resolve-self ./test/test-constants.mjs",
+    "test": "tap --no-esm --node-arg=--experimental-modules --node-arg=--experimental-resolve-self test/*.mjs"
   },
   "bin": {
     "lorem": "./bin/lorem"
@@ -15,8 +14,12 @@
   },
   "keywords": [],
   "exports": {
-    "shared/constants": "./src/node_modules/shared/constants.js"
+    ".": "./lib/constants.mjs",
+    "./constants": "./lib/constants.mjs"
   },
   "author": "",
-  "license": "0BSD"
+  "license": "0BSD",
+  "devDependencies": {
+    "tap": "^14.10.1"
+  }
 }
