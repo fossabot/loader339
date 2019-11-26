@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node --experimental-modules --experimental-resolve-self ./test/test-constants.mjs",
-    "test": "tap --no-esm --node-arg=--experimental-modules --node-arg=--experimental-resolve-self test/*.mjs"
+    "post-install": "node --experimental-modules --no-warnings ./lib/version-check.mjs",
+    "start": "node --experimental-modules --experimental-json-modules ./test/test-constants.mjs",
+    "test": "tap --no-esm --node-arg=--experimental-modules --node-arg=--experimental-json-modules test/*.mjs"
   },
   "bin": {
     "lorem": "./bin/lorem"
@@ -21,5 +22,8 @@
   "license": "0BSD",
   "devDependencies": {
     "tap": "^14.10.1"
+  },
+  "dependencies": {
+    "semver": "^6.3.0"
   }
 }
