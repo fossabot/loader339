@@ -3,9 +3,10 @@
  *
  * * Monkey patch a module at import time.
  * * Have more than one active APM/transformer within a single app.
+ * * Keep track of which modules have been imported.
  *
  * Reqs: node v13.7.0
- * Flags: --experimental-loader
+ * Flags: --experimental-loader --harmony-top-level-await
  *
  * node --experimental-loader=./loader339.mjs ./alpha.mjs
  *
@@ -13,6 +14,12 @@
  * @license 0BSD
  * @module {module} loader339
  */
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+import { inspect } from 'util';
 
 //------------------------------------------------------------------------------
 // APMs/Transformers
@@ -26,16 +33,20 @@ function tranSpawn(source) {
   );
 }
 
-function apmMemUse(source) {
+function apmAnalytics(source, context) {
   // Monkey patch `export default ...` w/ IIFE wrapper [IIFExport].
   const regexp = /(export default )(.*)/g;
-  const wrapper = `export default (() => {
-    import('os').then((module) => {
-      import.meta.freemem = module.freemem();
-      import.meta.totalmem = module.totalmem();
-      console.table(import.meta);
-    });
-    return $2
+  const wrapper = `export default (async function () {
+    const { Module } = await import('module');
+    const module = new Module(import.meta.url);
+    module.context = ${ inspect(context) };
+    module.node = Module;
+    const original = $2
+    module.exports.default = function() {
+      return original.apply(this, arguments);
+    };
+    // console.log(Module);
+    return module;
   })();`;
   return source.replace(regexp, wrapper)
 }
@@ -55,7 +66,7 @@ export async function transformSource(source, context, defaultTransformSource) {
     // For some or all URLs, do some custom logic for modifying the source.
     // Always return an object of the form {source: <string|buffer>}.
     return {
-      source: apmMemUse(tranSpawn(source)),
+      source: apmAnalytics(tranSpawn(source), context),
     };
   }
   // Defer to Node.js for all other sources.

@@ -1,12 +1,16 @@
 /**
- * INSTRUMENTME(loader339): monkey patch `export default ...` with IIFE wrapper
+ * @fileoverview The beta module.
+ *
+ * @author Derek Lewis <DerekNonGeneric@inf.is>
+ * @license 0BSD
+ * @module {module} beta
  */
 
 /**
  * @param {number} operand
  * @return {number}
  */
-function addself(operand) {
+const addself = async function(operand) {
   return operand + operand;
 }
 
