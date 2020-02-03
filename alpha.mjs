@@ -12,10 +12,10 @@
 
 import { createRequire } from 'module';
 import { spawn } from 'child_process';
+let { default: beta } = await import('./beta.mjs');
 
 const require = createRequire(import.meta.url);
 const cliTruncate = require('cli-truncate');
-const { default: beta } = await import('./beta.mjs');
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -33,16 +33,15 @@ function maybeUnwrap(object) {
 // Main
 //------------------------------------------------------------------------------
 
-const ns = {};
-ns.beta = await beta;
-ns.beta.addself = maybeUnwrap(ns.beta);
+beta = await beta; // Dubbing this "lazy loading" while reengineering.
+beta.addself = maybeUnwrap(beta);
 
 const selfVar = 100;
 console.log(`\n ↓ addself(${selfVar})`);
-await ns.beta.addself(selfVar).then(console.table.bind(console));
+console.log(await beta.addself(selfVar));
 
-if (ns.beta.hasOwnProperty('node')) {
-  import.meta.loaded = new Set(Object.keys(ns.beta.node._cache));
+if (beta.hasOwnProperty('node')) {
+  import.meta.loaded = new Set(Object.keys(beta.node._cache));
   const truncateLoaded = [...import.meta.loaded].map((v, i, a) => {
     return cliTruncate(v, 80, { position: 'middle', space: false });
   });
@@ -51,9 +50,9 @@ if (ns.beta.hasOwnProperty('node')) {
   console.table(truncateLoaded);
 }
 
-if (ns.beta.hasOwnProperty('context')) {
+if (beta.hasOwnProperty('context')) {
   console.log('\n ↓ BETA MODULE CONTEXT ↓');
-  console.table(ns.beta.context);
+  console.table(beta.context);
 }
 
 console.log('\n ↓ INSTALLED PACKAGES ↓');
