@@ -10,7 +10,7 @@
  * @param {number} operand
  * @return {number}
  */
-const addself = async function(operand) {
+async function addself(operand) {
   return operand + operand;
 }
 

@@ -10,26 +10,30 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import { spawn } from 'child_process';
 import { createRequire } from 'module';
+import { spawn } from 'child_process';
 
 const require = createRequire(import.meta.url);
 const cliTruncate = require('cli-truncate');
-const { default: beta } = (await import('./beta.mjs'));
+const { default: beta } = await import('./beta.mjs');
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
-function maybeUnwrap(obj) {
-  return obj && obj.exports ? obj.exports.default : obj;
+/**
+ * @param {object} object
+ * @return {object}
+ */
+function maybeUnwrap(object) {
+  return object && object.exports ? object.exports.default : object;
 }
 
 //------------------------------------------------------------------------------
 // Main
 //------------------------------------------------------------------------------
 
-var ns = {}
+const ns = {};
 ns.beta = await beta;
 ns.beta.addself = maybeUnwrap(ns.beta);
 
@@ -37,23 +41,20 @@ const selfVar = 100;
 console.log(`\n ↓ addself(${selfVar})`);
 await ns.beta.addself(selfVar).then(console.table.bind(console));
 
-if(ns.beta.hasOwnProperty('node')) {
+if (ns.beta.hasOwnProperty('node')) {
   import.meta.loaded = new Set(Object.keys(ns.beta.node._cache));
-  const truncLoaded = Array.from(import.meta.loaded).map((v, i, a) => {
-    return cliTruncate(v, 80, {position: 'middle', space: false});
+  const truncateLoaded = [...import.meta.loaded].map((v, i, a) => {
+    return cliTruncate(v, 80, { position: 'middle', space: false });
   });
-  
+
   console.log('\n ↓ MODULE CACHE ↓');
-  console.table(truncLoaded);
+  console.table(truncateLoaded);
 }
 
-if(ns.beta.hasOwnProperty('context')) {
+if (ns.beta.hasOwnProperty('context')) {
   console.log('\n ↓ BETA MODULE CONTEXT ↓');
   console.table(ns.beta.context);
 }
 
 console.log('\n ↓ INSTALLED PACKAGES ↓');
 spawn('npm', ['list', '-depth', '0'], { stdio: 'inherit' });
-
-
-

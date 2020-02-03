@@ -25,21 +25,34 @@ import { inspect } from 'util';
 // APMs/Transformers
 //------------------------------------------------------------------------------
 
+/**
+ * Transformer for cross-platform process spawning when shelling out.
+ *
+ * @param {string} source
+ * @return {string}
+ */
 function tranSpawn(source) {
   // Replace a builtin module with custom module.
   return source.replace(
     /import { spawn } from 'child_process';/g,
-    `import spawn from 'cross-spawn';`
+    "import spawn from 'cross-spawn';"
   );
 }
 
+/**
+ * APM for analytics.
+ *
+ * @param {string} source
+ * @param {Object} context
+ * @return {string}
+ */
 function apmAnalytics(source, context) {
   // Monkey patch `export default ...` w/ IIFE wrapper [IIFExport].
   const regexp = /(export default )(.*)/g;
   const wrapper = `export default (async function () {
     const { Module } = await import('module');
     const module = new Module(import.meta.url);
-    module.context = ${ inspect(context) };
+    module.context = ${inspect(context)};
     module.node = Module;
     const original = $2
     module.exports.default = function() {
@@ -48,7 +61,7 @@ function apmAnalytics(source, context) {
     // console.log(Module);
     return module;
   })();`;
-  return source.replace(regexp, wrapper)
+  return source.replace(regexp, wrapper);
 }
 
 //------------------------------------------------------------------------------
