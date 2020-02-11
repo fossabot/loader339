@@ -51,10 +51,9 @@ function apmAnalytics(source, context) {
   // IIFE wrapper [IIFExport].
   //
   // This IIFExport is invoked, in its own context, at the last possible moment
-  // before being imported. Anything can take place in this IIFExport
-  // alerting, timing, logging, etc. In this example, we are wrapping our
+  // before being imported. Anything can take place in this IIFExport (e.g.,
+  // alerting, timing, logging, etc.) In this example, we are wrapping our
   // default export in a module record-like wrapper & retrofitting its exports.
-  //
   const regexp = /(export default )(.*)/g;
   const wrapper = `export default (async function () {
     const { Module } = await import('module');
@@ -62,9 +61,14 @@ function apmAnalytics(source, context) {
     module = {...module, ...Module};
     module.context = ${inspect(context)};
     const original = $2
-    module.exports.default = function() {
-      return original.apply(this, arguments);
-    };
+
+    if (typeof original === 'function') {
+      module.exports.default = function() {
+        return original.apply(this, arguments);
+      };
+    } else {
+      module.exports.default = original;
+    }
     return module;
   })();`;
   return source.replace(regexp, wrapper);

@@ -34,11 +34,10 @@ function maybeUnwrap(object) {
 //------------------------------------------------------------------------------
 
 beta = await beta; // Dubbing this "lazy loading" while reengineering.
-beta.addself = maybeUnwrap(beta);
 
 const selfVar = 100;
 console.log(`\n ↓ addself(${selfVar})`);
-console.log(await beta.addself(selfVar));
+console.log(await maybeUnwrap(beta).addself(selfVar));
 
 if (beta.hasOwnProperty('_cache')) {
   const abbreviatedModuleMap = {};

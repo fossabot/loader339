@@ -14,4 +14,4 @@ async function addself(operand) {
   return operand + operand;
 }
 
-export default addself;
+export default { addself };
