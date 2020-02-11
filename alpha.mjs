@@ -10,10 +10,10 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import { createRequire } from 'module';
+import { Module, createRequire } from 'module';
 import { spawn } from 'child_process';
-let { default: beta } = await import('./beta.mjs');
 
+let { default: beta } = await import('./beta.mjs');
 const require = createRequire(import.meta.url);
 const cliTruncate = require('cli-truncate');
 
@@ -40,14 +40,23 @@ const selfVar = 100;
 console.log(`\n ↓ addself(${selfVar})`);
 console.log(await beta.addself(selfVar));
 
-if (beta.hasOwnProperty('node')) {
-  import.meta.loaded = new Set(Object.keys(beta.node._cache));
-  const truncateLoaded = [...import.meta.loaded].map((v, i, a) => {
-    return cliTruncate(v, 80, { position: 'middle', space: false });
+if (beta.hasOwnProperty('_cache')) {
+  const abbreviatedModuleMap = {};
+
+  Object.keys(beta._cache).forEach((v, i, a) => {
+    const newKey = cliTruncate(v, 63, { position: 'middle', space: false });
+
+    const blankModuleRecord = new Module();
+    blankModuleRecord.loaded = true;
+    const moduleRecord = Object.assign(blankModuleRecord, {
+      ...beta._cache[v],
+    });
+
+    abbreviatedModuleMap[newKey] = { moduleRecord };
   });
 
-  console.log('\n ↓ MODULE CACHE ↓');
-  console.table(truncateLoaded);
+  console.log('\n ↓ BETA MODULE MAP ↓');
+  console.table(abbreviatedModuleMap);
 }
 
 if (beta.hasOwnProperty('context')) {
@@ -57,3 +66,6 @@ if (beta.hasOwnProperty('context')) {
 
 console.log('\n ↓ INSTALLED PACKAGES ↓');
 spawn('npm', ['list', '-depth', '0'], { stdio: 'inherit' });
+
+// Entry module using top-level await that *also* exports.
+export default maybeUnwrap;

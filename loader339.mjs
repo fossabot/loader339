@@ -47,18 +47,24 @@ function tranSpawn(source) {
  * @return {string}
  */
 function apmAnalytics(source, context) {
-  // Monkey patch `export default ...` w/ IIFE wrapper [IIFExport].
+  // Monkey patch a module at import time by patching `export default ...` w/ an
+  // IIFE wrapper [IIFExport].
+  //
+  // This IIFExport is invoked, in its own context, at the last possible moment
+  // before being imported. Anything can take place in this IIFExport
+  // alerting, timing, logging, etc. In this example, we are wrapping our
+  // default export in a module record-like wrapper & retrofitting its exports.
+  //
   const regexp = /(export default )(.*)/g;
   const wrapper = `export default (async function () {
     const { Module } = await import('module');
-    const module = new Module(import.meta.url);
+    let module = new Module(import.meta.url);
+    module = {...module, ...Module};
     module.context = ${inspect(context)};
-    module.node = Module;
     const original = $2
     module.exports.default = function() {
       return original.apply(this, arguments);
     };
-    // console.log(Module);
     return module;
   })();`;
   return source.replace(regexp, wrapper);
