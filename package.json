@@ -14,22 +14,21 @@
     "start": "node --no-warnings --harmony-top-level-await --experimental-modules --experimental-json-modules --experimental-loader=./loader339.mjs ./alpha.mjs",
     "nonloader-start": "node --no-warnings --harmony-top-level-await ./alpha.mjs",
     "test": "npm run tap",
-    "tap": "npx tap --reporter=spec --harmony --node-arg=--no-warnings --node-arg=--experimental-modules --node-arg=--experimental-json-modules --node-arg=--harmony-top-level-await ./test/test-*.mjs",
+    "tap": "npx tap --reporter=spec --no-esm --harmony --node-arg=--no-warnings --node-arg=--experimental-modules --node-arg=--experimental-json-modules --node-arg=--harmony-top-level-await ./test/test-*.mjs",
     "coverage": "npm run tap -- --coverage",
     "coverage-html": "npm run tap -- --coverage-report=html"
   },
   "bin": {
     "loader339": "./bin/loader339"
   },
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "exports": {
     ".": {
-      "import": "lib/index.mjs",
-      "default": "lib/index.js"
+      "import": "./lib/index.mjs",
+      "default": "./lib/index.js"
     },
     "./": "./",
-    "./constants": "./lib/constants.mjs",
-    "esm": "lib/index.mjs"
+    "./constants": "./lib/constants.mjs"
   },
   "repository": {
     "type": "git",
