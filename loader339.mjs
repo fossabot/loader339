@@ -79,15 +79,15 @@ function apmAnalytics(source, context) {
 //------------------------------------------------------------------------------
 
 /**
- * @param {string|Buffer} source
- * @param {object} context
- * @param {function} defaultTransformSource
- * @return {(object)|(string|Buffer)} response or response.source
+ * @param {!(string|Buffer)} source
+ * @param {!({url: !(string), format: !(string)})} context
+ * @param {!(Function)} defaultTransformSource
+ * @return {Promise<{source: !(string|Buffer)}>} response or response.source
  */
 export async function transformSource(source, context, defaultTransformSource) {
   if (typeof source === 'string') {
     // For some or all URLs, do some custom logic for modifying the source.
-    // Always return an object of the form {source: <string|buffer>}.
+    // Always return an object of the form {source: (string|Buffer)}.
     return {
       source: apmAnalytics(tranSpawn(source), context),
     };

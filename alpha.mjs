@@ -45,13 +45,13 @@ if (beta.hasOwnProperty('_cache')) {
   Object.keys(beta._cache).forEach((v, i, a) => {
     const newKey = cliTruncate(v, 63, { position: 'middle', space: false });
 
-    const blankModuleRecord = new Module();
+    const blankModuleRecord = new Module(import.meta.url);
     blankModuleRecord.loaded = true;
     const moduleRecord = Object.assign(blankModuleRecord, {
       ...beta._cache[v],
     });
 
-    abbreviatedModuleMap[newKey] = { moduleRecord };
+    /** @type {Module} */ abbreviatedModuleMap[newKey] = { moduleRecord };
   });
 
   console.log('\n ↓ BETA MODULE MAP ↓');

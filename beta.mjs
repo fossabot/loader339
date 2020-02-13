@@ -8,7 +8,8 @@
 
 /**
  * @param {number} operand
- * @return {number}
+ *
+ * @return {Promise<number>}
  */
 async function addself(operand) {
   return operand + operand;
