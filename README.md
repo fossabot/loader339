@@ -6,14 +6,36 @@
 | :------: |
 | v13.7.0+ |
 
-## Basic System Goals
+## <a id="Table_of_Contents">Table of Contents</a>
+
+- [<span class="tocnumber">1</span> <span class="toctext">Installation</span>](#installation)
+- [<span class="tocnumber">2</span> <span class="toctext">Usage</span>](#usage)
+- [<span class="tocnumber">3</span> <span class="toctext">Basic System Goals</span>](#basic-system-goals)
+  - [<span class="tocnumber">3.1</span> <span class="toctext">Status per User Goal</span>](#status-per-user-goal)
+  - [<span class="tocnumber">3.2</span> <span class="toctext">Status per Platform Goal</span>](#status-per-platform-goal)
+- [<span class="tocnumber">4</span> <span class="toctext">Key Terms</span>](#key-terms)
+- [<span class="tocnumber">5</span> <span class="toctext">Contributing</span>](#contributing)
+- [<span class="tocnumber">6</span> <span class="toctext">Credits</span>](#credits)
+- [<span class="tocnumber">7</span> <span class="toctext">License</span>](#license)
+
+## Installation
+
+1. `npm install`
+
+## Usage
+
+1. `npm test`
+
+1. `npm start`
+
+## Basic System Goals<a id="basic-system-goals"></a>
 
 _The goals below represent requirements voiced in issues about outstanding user
 needs related to custom module loading. The custom module loader, which is
 currently experimental, has been employed to solve for use cases that were
 prohibitive to ES module adoption._
 
-### Status per User Goal
+### <a id="status-per-user-goal">Status per User Goal</a>
 
 ○ patch a module w/o changing its URL in the [_module map_](#module-map)  
 ○ rewrite the URL of an import request before loader resolution  
@@ -40,13 +62,18 @@ prohibitive to ES module adoption._
 ├── ○ user module code  
 └── × node builtin module code
 
-### Status per Platform Goal
+### Status per Platform Goal<a id="status-per-platform-goal"></a>
 
-△ `vm.Module` & ways to create custom ES module implementations such as those
-seen in [jsdom](https://github.com/jsdom/jsdom)  
-△ `vm.ReflectiveModule` as a means to declare a list of exports and expose a
-reflection API to those exports  
-△ provide an option to both `vm.Script` and `vm.Module` to intercept `import()`
+△ way to create custom ES module implementations à la
+[jsdom](https://github.com/jsdom/jsdom)  
+└── △ [`vm.Module`](https://nodejs.org/api/vm.html#vm_class_vm_module)  
+× way to declare a list of exports and expose a reflection API to them  
+└── × `vm.ReflectiveModule`  
+△ way to intercept `import()`  
+├── × available to
+[`vm.Script`](https://nodejs.org/api/vm.html#vm_class_vm_script)  
+└── △ available to
+[`vm.Module`](https://nodejs.org/api/vm.html#vm_class_vm_module)
 
 ---
 
@@ -60,7 +87,7 @@ reflection API to those exports
 <tbody>
 </table>
 
-## Key Terms
+## Key Terms<a id="key-terms"></a>
 
 <dl>
 <dt id="apm">application performance management (APM)</dt>
@@ -104,3 +131,32 @@ running locally (affecting only the running instance of the program)
 
 <sup id="ref2">2</sup>
 [ES modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
+
+## Contributing
+
+Contributions are both welcomed and encouraged!
+
+First contributors, be sure to add yourself to:
+
+- the [Credits](#credits) section of this README file
+- the `contributors` object in the [package.json](./package.json) file
+
+## Credits
+
+- [@DerekNonGeneric](https://github.com/DerekNonGeneric) - Derek Lewis
+- [@MylesBorins](https://github.com/MylesBorins) - Myles Borins
+
+## License
+
+```
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
