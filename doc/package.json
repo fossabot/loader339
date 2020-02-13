@@ -1,0 +1,11 @@
+{
+  "name": "doc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "doc-img": "file:img"
+  }
+}

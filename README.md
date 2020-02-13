@@ -2,11 +2,13 @@
 
 𝗪𝗜𝗣：A prototype of a patching/instrumenting ES module loader.
 
-| Node.js  |
-| :------: |
-| v13.7.0+ |
+[![Node.js](https://img.shields.io/badge/Node.js-black?logo=Node.js&logoColor=green)](https://nodejs.org/en/about/)
+[![Node.js](https://img.shields.io/badge/node%40latest-%3E%3D%2013.7.0-brightgreen)](https://nodejs.org/en/download/current/)
+![](https://img.shields.io/badge/status-experimental-blue)
+![](https://img.shields.io/github/languages/top/DerekNonGeneric/loader339)
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B15970%2Fgit%40github.com%3ADerekNonGeneric%2Floader339.git.svg?type=shield)](https://app.fossa.com/projects/custom%2B15970%2Fgit%40github.com%3ADerekNonGeneric%2Floader339.git?ref=badge_shield)
 
-## <a id="Table_of_Contents">Table of Contents</a>
+**Table of Contents**
 
 - [<span class="tocnumber">1</span> <span class="toctext">Installation</span>](#installation)
 - [<span class="tocnumber">2</span> <span class="toctext">Usage</span>](#usage)
@@ -37,9 +39,11 @@ prohibitive to ES module adoption._
 
 ### <a id="status-per-user-goal">Status per User Goal</a>
 
-○ patch a module w/o changing its URL in the [_module map_](#module-map)  
+○ patch a module w/o changing its URL in the
+[_module map_](./doc/atlas.md#module-map)  
 ○ rewrite the URL of an import request before loader resolution  
-○ more than one active [APM](#apm)/transformer within a single app  
+○ more than one active [APM](./doc/atlas.md#apm)/transformer within a single
+app  
 △ safe hook application in an arbitrary sequence  
 △ patch/wrap a module's exports  
 ├── ○ wrap `export default ...` w/ IIFE  
@@ -58,7 +62,7 @@ prohibitive to ES module adoption._
 × rewrite a module's compiled source code  
 ├── × user module code  
 └── × node builtin module code  
-△ [_monkey patch_](#monkey-patch) a module at import time  
+△ [_monkey patch_](./doc/atlas.md#monkey-patch) a module at import time  
 ├── ○ user module code  
 └── × node builtin module code
 
@@ -87,51 +91,6 @@ prohibitive to ES module adoption._
 <tbody>
 </table>
 
-## Key Terms<a id="key-terms"></a>
-
-<dl>
-<dt id="apm">application performance management (APM)</dt>
-<dd>
-
-the monitoring and management of performance and availability of software
-applications — strives to detect and diagnose complex application performance
-problems to maintain an expected level of service
-
-</dd>
-<dt id="module-map">
-
-[module map](https://html.spec.whatwg.org/multipage/webappapis.html#module-map)
-
-</dt>
-<dd>
-
-a map of URL records to values that are either a module script, null (used to
-represent failed fetches), or a placeholder value `"fetching"` — used to ensure
-that imported JavaScript modules are only fetched, parsed, and evaluated once
-per Document or worker <sup>[1](#ref1)</sup>
-
-![](doc/img/25_module_map.png) _A cartoon module map, by
-[Lin Clark](https://twitter.com/linclark). <sup>[2](#ref2)</sup>_
-
-</dd>
-
-<dt id="monkey-patch">monkey patch</dt>
-<dd>
-
-a way for a program to extend or modify a module or class while the program is
-running locally (affecting only the running instance of the program)
-
-</dd>
-</dl>
-
----
-
-<sup id="ref1">1</sup>
-[Web application API](https://html.spec.whatwg.org/multipage/webappapis.html#module-map)
-
-<sup id="ref2">2</sup>
-[ES modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
-
 ## Contributing
 
 Contributions are both welcomed and encouraged!
@@ -148,15 +107,11 @@ First contributors, be sure to add yourself to:
 
 ## License
 
-```
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
+`loader339` is Open Source and [MIT](https://opensource.org/licenses/MIT)
+licensed. The codebase contains permissively-licensed content and takes a
+semi-centralized approach at managing license information. For details, see the
+[license policies](./doc/license-policies.md).
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
+You are free to use `loader339` for commercial or personal purposes. Enjoy!
+
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B15970%2Floader339.svg?type=large)](https://app.fossa.com/projects/custom%2B15970%2Floader339?ref=badge_large)

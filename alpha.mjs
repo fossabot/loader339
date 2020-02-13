@@ -29,6 +29,38 @@ function maybeUnwrap(object) {
   return object && object.exports ? object.exports.default : object;
 }
 
+/**
+ * @param {(string)} relative file path
+ *  @return {(string)} absolute file path
+ */
+function getAbsPath() {
+  // ~  pretend this this magically returns absolute paths ~
+}
+
+const absPathTestResolved = join(absPathFixturesDir, resolvedUrl);
+
+/**
+ * Converts actual URL returned by our real resolver (fileUrl) into path
+ * relative to fixturesDir so that it can be compared against a test's
+ * resolutionTest[0].resolvedURL.
+ *
+ * @param {!(URL|string)} realResolvedFileUrl - actual URL returned by our real resolver
+ * @param {!(string)} fixturesDir - path relative to project root (resolutionTest[0].fixturesDir)
+ * @param {!(string)} resolvedUrl - path relative to fixturesDir (resolutionTest[0].resolvedURL)
+ * @return {!(string)} path relative to fixturesDir
+ */
+async function relativePathFromFileUrl(
+  realResolvedFileUrl,
+  fixturesDir,
+  resolvedUrl
+) {
+  const { relative } = await import('path');
+  const absPathRealResolved = URL.fileURLToPath(realResolvedFileUrl);
+  const absPathFixturesDir = getAbsPath(fixturesDir);
+
+  return relative(absPathFixturesDir, absPathRealResolved);
+}
+
 //------------------------------------------------------------------------------
 // Main
 //------------------------------------------------------------------------------
@@ -50,7 +82,7 @@ if (beta.hasOwnProperty('_cache')) {
     const moduleRecord = Object.assign(blankModuleRecord, {
       ...beta._cache[v],
     });
-
+    Object.create;
     /** @type {Module} */ abbreviatedModuleMap[newKey] = { moduleRecord };
   });
 
